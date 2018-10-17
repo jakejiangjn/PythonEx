@@ -1,0 +1,9 @@
+﻿# Folders
+input
+output
+Ref
+.ipynb_checkpoints
+*.ipynb_checkpoints
+*.xls
+*.txt
+*.csv
