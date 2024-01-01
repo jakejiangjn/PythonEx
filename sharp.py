@@ -33,12 +33,15 @@ def pyramid_sharp(img, level: int, strength: list):
     return img_up
 # %%
 def usm_sharp(img, radius: int, strength: float, thres: float):
-    radius = radius // 2 * 2 + 1
+    if radius % 2 == 0:
+        radius += 1
+    # radius = radius // 2 * 2 + 1
     img_in = np.array(img / 255.)
     blur = cv2.GaussianBlur(img_in, (radius, radius), 0)
     res = img_in - blur
     mask = (np.abs(res) > (thres / 255.)) * 1.0
-    img_out = blur + res * mask * strength
+    mask = np.clip(cv2.GaussianBlur(mask, (radius, radius), 0), 0, 1)
+    img_out = img_in + res * mask * (strength - 1)
     img_out = np.clip(img_out * 255, 0, 255).astype(np.uint8)
     return img_out
 # %%
